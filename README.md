@@ -19,7 +19,7 @@
 - 📊 **Interactive Dashboard** - Visualize scan history and findings trends
 - 📁 **Multiple Input Methods** - Upload single files, entire folders, or clone Git repositories
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 
 ### Dashboard
 ![Dashboard](https://via.placeholder.com/800x400/1a2333/4f8cff?text=SecureShift+Dashboard)
@@ -28,12 +28,12 @@
 ![Scan Results](https://via.placeholder.com/800x400/1a2333/2ed573?text=Scan+Results)
 
 ### PDF Report
-![PDF Report](https://via.placeholder.com/800x400/1a2333/ff6b35?text=PDF+Report)
+![PDF Report](https://via.placeholder.com/800x400/1a2333/ff6b35?text=PDF+Report) -->
 
 ## 🚀 Quick Start
 
 ### Download
-Download the latest release for your platform from [Releases](https://github.com/toyosee/secureshift/releases)
+Download the latest release for your platform from [Releases](https://github.com/toyosee/secureshift/releases/tag/v1.0.0)
 
 ### Run
 ```bash
@@ -263,7 +263,7 @@ Development Workflow
 
 👨‍💻 Author
 
-Elijah Abolaji
+    Elijah Abolaji
 
     GitHub: @toyosee
 
@@ -273,8 +273,8 @@ Elijah Abolaji
 
 ⭐ Support
 
-If you find SecureShift useful, please give it a ⭐ on GitHub!
+    If you find SecureShift useful, please give it a ⭐ on GitHub!
 
-https://img.shields.io/github/stars/toyosee/secureshift?style=social
+# https://img.shields.io/github/stars/toyosee/secureshift?style=social
 
 Happy Coding! 🚀
