@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureShift - Security Scanner</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">🔒</span>
+                <span class="brand-text">SecureShift</span>
+                <span class="badge">v1.0.0</span>
+            </div>
+            <div class="nav-links">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-tab="scan">
+                    <i class="fas fa-search"></i> New Scan
+                </button>
+                <button class="nav-btn" data-tab="history">
+                    <i class="fas fa-history"></i> History
+                </button>
+            </div>
+            <div class="nav-actions">
+                <button id="themeToggle" class="icon-btn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <section id="dashboard" class="tab-content active">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(79, 140, 255, 0.1); color: #4f8cff;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Scans</span>
+                        <span class="stat-value" id="totalScans">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(255, 71, 87, 0.1); color: #ff4757;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Findings</span>
+                        <span class="stat-value" id="totalFindings">0</span>
+                    </div>
+                </div>
+                <div class="stat-card critical">
+                    <div class="stat-icon" style="background: rgba(255, 71, 87, 0.15); color: #ff4757;">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Critical</span>
+                        <span class="stat-value" id="criticalCount">0</span>
+                    </div>
+                </div>
+                <div class="stat-card high">
+                    <div class="stat-icon" style="background: rgba(255, 107, 53, 0.15); color: #ff6b35;">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">High</span>
+                        <span class="stat-value" id="highCount">0</span>
+                    </div>
+                </div>
+                <div class="stat-card medium">
+                    <div class="stat-icon" style="background: rgba(255, 177, 66, 0.15); color: #ffb142;">
+                        <i class="fas fa-circle-exclamation"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Medium</span>
+                        <span class="stat-value" id="mediumCount">0</span>
+                    </div>
+                </div>
+                <div class="stat-card low">
+                    <div class="stat-icon" style="background: rgba(46, 213, 115, 0.15); color: #2ed573;">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Low</span>
+                        <span class="stat-value" id="lowCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart and Recent Findings -->
+            <div class="dashboard-grid">
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-line"></i> Scan History (Last 30 Days)</h3>
+                    <canvas id="historyChart"></canvas>
+                </div>
+                <div class="recent-findings">
+                    <h3><i class="fas fa-clock"></i> Recent Critical Findings</h3>
+                    <div id="recentFindings" class="findings-list">
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle" style="font-size: 2rem; color: #2ed573;"></i>
+                            <p>No findings yet. Run your first scan!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scan Tab -->
+        <section id="scan" class="tab-content">
+            <div class="scan-container">
+                <div class="scan-header">
+                    <h2><i class="fas fa-search"></i> Start a New Security Scan</h2>
+                    <p>Upload your project or provide a Git repository URL</p>
+                </div>
+
+                <div class="scan-methods">
+                    <!-- Upload Method -->
+                    <div class="scan-method">
+                        <h3><i class="fas fa-upload"></i> Upload Project</h3>
+                        <div class="drop-zone" id="dropZone">
+                            <div class="drop-zone-content">
+                                <i class="fas fa-cloud-upload-alt drop-icon"></i>
+                                <p>Drag & drop your project folder here</p>
+                                <span class="drop-hint">or click to select files</span>
+                                <input type="file" id="fileInput" webkitdirectory directory multiple
+                                    style="display:none">
+                            </div>
+                        </div>
+                        <div id="uploadProgress" class="progress-container" style="display:none">
+                            <div class="progress-bar">
+                                <div id="uploadProgressBar" class="progress-fill" style="width:0%"></div>
+                            </div>
+                            <span id="uploadStatus" class="progress-text">Uploading...</span>
+                        </div>
+                    </div>
+
+                    <!-- Git Method -->
+                    <div class="scan-method">
+                        <h3><i class="fab fa-git-alt"></i> Git Repository</h3>
+                        <div class="input-group">
+                            <input type="text" id="gitUrl" placeholder="https://github.com/username/repo.git"
+                                class="input-field">
+                            <button id="scanGitBtn" class="btn btn-primary">
+                                <i class="fas fa-code-branch"></i> Scan Repo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scan Progress -->
+                <div id="scanProgress" class="scan-progress" style="display:none">
+                    <h3><i class="fas fa-spinner fa-spin"></i> Scan in Progress</h3>
+                    <div class="progress-bar large">
+                        <div id="scanProgressBar" class="progress-fill" style="width:0%"></div>
+                    </div>
+                    <div id="scanStatus" class="scan-status">Initializing...</div>
+                    <div id="scanLog" class="scan-log"></div>
+                </div>
+
+                <!-- Scan Results -->
+                <div id="scanResults" class="scan-results" style="display:none">
+                    <div class="results-header">
+                        <h3><i class="fas fa-clipboard-check"></i> Scan Results</h3>
+                        <div class="results-summary" id="resultsSummary"></div>
+                        <div class="report-actions" style="margin-top: 15px;">
+                            <button class="btn btn-primary" onclick="viewReport(state.currentResults?.id)">
+                                <i class="fas fa-eye"></i> View Full Report
+                            </button>
+                            <button class="btn btn-success" onclick="downloadPDF(state.currentResults?.id)">
+                                <i class="fas fa-file-pdf"></i> Download PDF Report
+                            </button>
+                        </div>
+                    </div>
+                    <div id="findingsList" class="findings-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Tab -->
+        <section id="history" class="tab-content">
+            <div class="history-container">
+                <h2><i class="fas fa-history"></i> Scan History</h2>
+                <div id="historyList" class="history-list">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox" style="font-size: 2rem; color: #556688;"></i>
+                        <p>No scans performed yet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="brand-icon">🔒</span>
+                <span class="brand-text">SecureShift</span>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-info">
+                <p>
+                    Developed by
+                    <strong>Elijah Abolaji</strong>
+                </p>
+                <div class="footer-links">
+                    <a href="mailto:tyabolaji@gmail.com" target="_blank" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://github.com/toyosee" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/elijahabolaji/" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <!-- <a href="https://twitter.com/elijahabolaji" target="_blank" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a> -->
+                </div>
+            </div>
+            <div class="footer-version">
+                <span class="badge">v1.0.0</span>
+                <span class="license">MIT License</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
