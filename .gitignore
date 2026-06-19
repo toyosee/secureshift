@@ -1,2 +1,3 @@
 secureshift.db
 .env
+build-release.bat
